@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rocFFT &mdash; rocFFT 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rocFFT 1.0 documentation" href="index.html"/>
+        <link rel="next" title="Real data" href="real.html"/>
+        <link rel="prev" title="Welcome to rocFFT’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rocFFT
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">rocFFT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fft-computation">FFT Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#library-setup-and-cleanup">Library Setup and Cleanup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plans">Plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transform-and-array-types">Transform and Array types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#batches">Batches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strides-and-distances">Strides and Distances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#result-placement">Result placement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#real-ffts">Real FFTs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="real.html">Real data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="real.html#supported-array-type-combinations">Supported array type combinations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="real.html#setting-strides">Setting strides</a></li>
+<li class="toctree-l3"><a class="reference internal" href="real.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rocFFT</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>rocFFT</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/library.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="rocfft">
+<h1>rocFFT<a class="headerlink" href="#rocfft" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The rocFFT library is an implementation of discrete Fast Fourier Transforms (FFT) written in HiP for GPU devices.
+The code is open and hosted here: <a class="reference external" href="https://github.com/ROCmSoftwarePlatform/rocFFT">https://github.com/ROCmSoftwarePlatform/rocFFT</a></p>
+<p>The rocFFT library:</p>
+<ul class="simple">
+<li>Provides a fast and accurate platform for calculating discrete FFTs.</li>
+<li>Supports single and double precision floating point formats.</li>
+<li>Supports 1D, 2D, and 3D transforms.</li>
+<li>Supports computation of transforms in batches.</li>
+<li>Supports real and complex FFTs.</li>
+<li>Supports lengths that are any combination of powers of 2, 3, 5.</li>
+</ul>
+</div>
+<div class="section" id="fft-computation">
+<h2>FFT Computation<a class="headerlink" href="#fft-computation" title="Permalink to this headline">¶</a></h2>
+<p>The FFT is an implementation of the Discrete Fourier Transform (DFT) that makes use of symmetries in the DFT definition to
+reduce the mathematical complexity from <span class="math">\(O(N^2)\)</span> to <span class="math">\(O(N \log N)\)</span> when the sequence length, <em>N</em>, is
+the product of small prime factors.</p>
+<p>What is computed by the library? Here are the formulas:</p>
+<p>For a 1D complex DFT:</p>
+<p><span class="math">\({\tilde{x}}_j = {{1}\over{scale}}\sum_{k=0}^{n-1}x_k\exp\left({\pm i}{{2\pi jk}\over{n}}\right)\hbox{ for } j=0,1,\ldots,n-1\)</span></p>
+<p>where, <span class="math">\(x_k\)</span> are the complex data to be transformed, <span class="math">\(\tilde{x}_j\)</span> are the transformed data, and the sign <span class="math">\(\pm\)</span>
+determines the direction of the transform: <span class="math">\(-\)</span> for forward and <span class="math">\(+\)</span> for backward. Note that you must provide the scaling
+factor.  By default, the scale is set to 1 for the transforms.</p>
+<p>For a 2D complex DFT:</p>
+<p><span class="math">\({\tilde{x}}_{jk} = {{1}\over{scale}}\sum_{q=0}^{m-1}\sum_{r=0}^{n-1}x_{rq}\exp\left({\pm i} {{2\pi jr}\over{n}}\right)\exp\left({\pm i}{{2\pi kq}\over{m}}\right)\)</span></p>
+<p>for <span class="math">\(j=0,1,\ldots,n-1\hbox{ and } k=0,1,\ldots,m-1\)</span>, where, <span class="math">\(x_{rq}\)</span> are the complex data to be transformed,
+<span class="math">\(\tilde{x}_{jk}\)</span> are the transformed data, and the sign <span class="math">\(\pm\)</span> determines the direction of the transform.  By default, the
+scale is set to 1 for the transforms.</p>
+<p>For a 3D complex DFT:</p>
+<p><span class="math">\(\tilde{x}_{jkl} = {{1}\over{scale}}\sum_{s=0}^{p-1}\sum_{q=0}^{m-1}\sum_{r=0}^{n-1}x_{rqs}\exp\left({\pm i} {{2\pi jr}\over{n}}\right)\exp\left({\pm i}{{2\pi kq}\over{m}}\right)\exp\left({\pm i}{{2\pi ls}\over{p}}\right)\)</span></p>
+<p>for <span class="math">\(j=0,1,\ldots,n-1\hbox{ and } k=0,1,\ldots,m-1\hbox{ and } l=0,1,\ldots,p-1\)</span>, where <span class="math">\(x_{rqs}\)</span> are the complex data to
+be transformed, <span class="math">\(\tilde{x}_{jkl}\)</span> are the transformed data, and the sign <span class="math">\(\pm\)</span> determines the direction of the transform.
+By default, the scale is set to 1 for the transforms.</p>
+</div>
+<div class="section" id="library-setup-and-cleanup">
+<h2>Library Setup and Cleanup<a class="headerlink" href="#library-setup-and-cleanup" title="Permalink to this headline">¶</a></h2>
+<p>At the beginning of the program, before any of the library api is called, the function <a class="reference internal" href="api.html#_CPPv212rocfft_setupv" title="rocfft_setup"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_setup()</span></code></a> has to be called. Similarly,
+the function <a class="reference internal" href="api.html#_CPPv214rocfft_cleanupv" title="rocfft_cleanup"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_cleanup()</span></code></a> has to be called at the end of the program. These apis ensure resources are properly allocated and freed.</p>
+</div>
+<div class="section" id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+<p>In order to compute an FFT transform with rocFFT, a plan has to be created first. A plan is a handle to an internal data structure that
+holds the details about the transform that the user wishes to compute. After the plan is created, it can be executed (a separate api call)
+with the specified data buffers. The execution step can be repeated any number of times with the same plan on different input/output buffers
+as needed. And when the plan is no longer needed, it gets destroyed.</p>
+<p>To do a transform,</p>
+<ol class="arabic simple">
+<li>Initialize the library by calling <a class="reference internal" href="api.html#_CPPv212rocfft_setupv" title="rocfft_setup"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_setup()</span></code></a></li>
+<li>Create a plan, for each distinct type of FFT needed:<ul>
+<li>To create a plan, do either of the following<ul>
+<li>If the plan specification is simple, call <a class="reference internal" href="api.html#_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description" title="rocfft_plan_create"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_create()</span></code></a> and specify the value of the fundamental parameters</li>
+<li>If the plan has more details, first a plan description is created with <a class="reference internal" href="api.html#_CPPv230rocfft_plan_description_createP23rocfft_plan_description" title="rocfft_plan_description_create"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_description_create()</span></code></a>, and additional apis such
+as <a class="reference internal" href="api.html#_CPPv239rocfft_plan_description_set_data_layout23rocfft_plan_description17rocfft_array_type17rocfft_array_typePK6size_tPK6size_t6size_tPK6size_t6size_t6size_tPK6size_t6size_t" title="rocfft_plan_description_set_data_layout"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_description_set_data_layout()</span></code></a> are called to specify plan details. And then, <a class="reference internal" href="api.html#_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description" title="rocfft_plan_create"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_create()</span></code></a> is called
+with the description handle passed to it along with other details.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Execute the plan<ul>
+<li>The execution api <a class="reference internal" href="api.html#_CPPv214rocfft_executeK11rocfft_planA_PvA_Pv21rocfft_execution_info" title="rocfft_execute"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_execute()</span></code></a> is used to do the actual computation on the data buffers specified</li>
+<li>For specifying scratch/work buffers, and other parameters or to get back information regarding execution, an execution info object needs to be created
+using <a class="reference internal" href="api.html#_CPPv228rocfft_execution_info_createP21rocfft_execution_info" title="rocfft_execution_info_create"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_execution_info_create()</span></code></a> and passed to the execution api</li>
+<li>Execution api can be called repeatedly as needed for different data, with the same plan</li>
+</ul>
+</li>
+<li>Destroy the plan</li>
+<li>Terminate the library by calling <a class="reference internal" href="api.html#_CPPv214rocfft_cleanupv" title="rocfft_cleanup"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_cleanup()</span></code></a></li>
+</ol>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;hip/hip_runtime_api.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;hip/hip_vector_types.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;rocfft.h&quot;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+        <span class="c1">// rocFFT gpu compute</span>
+        <span class="c1">// ========================================</span>
+
+        <span class="n">rocfft_setup</span><span class="p">();</span>
+
+        <span class="kt">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
+        <span class="kt">size_t</span> <span class="n">Nbytes</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">float2</span><span class="p">);</span>
+
+        <span class="c1">// Create HIP device buffer</span>
+        <span class="n">float2</span> <span class="o">*</span><span class="n">x</span><span class="p">;</span>
+        <span class="n">hipMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="n">Nbytes</span><span class="p">);</span>
+
+        <span class="c1">// Initialize data</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">float2</span><span class="o">&gt;</span> <span class="n">cx</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+                <span class="n">cx</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="n">cx</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">//  Copy data to device</span>
+        <span class="n">hipMemcpy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cx</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">Nbytes</span><span class="p">,</span> <span class="n">hipMemcpyHostToDevice</span><span class="p">);</span>
+
+        <span class="c1">// Create rocFFT plan</span>
+        <span class="n">rocfft_plan</span> <span class="n">plan</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="kt">size_t</span> <span class="n">length</span> <span class="o">=</span> <span class="n">N</span><span class="p">;</span>
+        <span class="n">rocfft_plan_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">plan</span><span class="p">,</span> <span class="n">rocfft_placement_inplace</span><span class="p">,</span> <span class="n">rocfft_transform_type_complex_forward</span><span class="p">,</span> <span class="n">rocfft_precision_single</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+        <span class="c1">// Execute plan</span>
+        <span class="n">rocfft_execute</span><span class="p">(</span><span class="n">plan</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+        <span class="c1">// Wait for execution to finish</span>
+        <span class="n">hipDeviceSynchronize</span><span class="p">();</span>
+
+        <span class="c1">// Destroy plan</span>
+        <span class="n">rocfft_plan_destroy</span><span class="p">(</span><span class="n">plan</span><span class="p">);</span>
+
+        <span class="c1">// Copy result back to host</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">float2</span><span class="o">&gt;</span> <span class="n">y</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+        <span class="n">hipMemcpy</span><span class="p">(</span><span class="n">y</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">x</span><span class="p">,</span> <span class="n">Nbytes</span><span class="p">,</span> <span class="n">hipMemcpyDeviceToHost</span><span class="p">);</span>
+
+        <span class="c1">// Print results</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Free device buffer</span>
+        <span class="n">hipFree</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+        <span class="n">rocfft_cleanup</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plans">
+<h2>Plans<a class="headerlink" href="#plans" title="Permalink to this headline">¶</a></h2>
+<p>A plan is the collection of (almost) all the parameters needed to specify an FFT computation. A rocFFT plan includes the
+following information:</p>
+<ul class="simple">
+<li>Type of transform (complex or real)</li>
+<li>Dimension of the transform (1D, 2D or 3D)</li>
+<li>Length or extent of data in each dimension</li>
+<li>Number of datasets that are transformed (batch size)</li>
+<li>Floating-point precision of the data</li>
+<li>Scaling factor for the transformed data</li>
+<li>In-place or not in-place transform</li>
+<li>Format (array type) of the input/output buffer</li>
+<li>Layout of data in the input/output buffer</li>
+</ul>
+<p>The rocFFT plan does not include the following parameters:</p>
+<ul class="simple">
+<li>The handles to the input and output data buffers.</li>
+<li>The handle to a temporary scratch buffer (if needed).</li>
+<li>Other information to control execution on the device.</li>
+</ul>
+<p>These parameters are specified when the plan is executed.</p>
+</div>
+<div class="section" id="data">
+<h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
+<p>The input/output buffers that hold the data for the transform must be allocated, initialized and specified to the library by the
+user. For larger transforms, scratch/work buffers may be needed. Because the library tries to minimize its own allocation of
+memory regions on the device, it expects the user to manage work buffers. The size of the buffer needed can be queried using
+<a class="reference internal" href="api.html#_CPPv232rocfft_plan_get_work_buffer_sizeK11rocfft_planP6size_t" title="rocfft_plan_get_work_buffer_size"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_get_work_buffer_size()</span></code></a> and after their allocation can be passed to the library by
+<a class="reference internal" href="api.html#_CPPv237rocfft_execution_info_set_work_buffer21rocfft_execution_infoPv6size_t" title="rocfft_execution_info_set_work_buffer"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_execution_info_set_work_buffer()</span></code></a>. The samples in the source repository show how to use these.</p>
+</div>
+<div class="section" id="transform-and-array-types">
+<h2>Transform and Array types<a class="headerlink" href="#transform-and-array-types" title="Permalink to this headline">¶</a></h2>
+<p>There are two main types of FFT transforms in the library:</p>
+<ul>
+<li><p class="first">Complex FFT - Transformation of complex data; the library supports the following two array types to store complex numbers:</p>
+<ol class="arabic simple">
+<li>Planar format - where the real and imaginary components are kept in 2 separate arrays:
+Buffer1: RRRRR
+Buffer2: IIIII</li>
+<li>Interleaved format - where the real and imaginary components are stored as contiguous pairs in the same array:
+Buffer: RIRIRIRIRIRI</li>
+</ol>
+<p>Complex FFT could either be forward or backward.</p>
+</li>
+<li><p class="first">Real FFT - Transformation of real data. For transforms involving real data, there are two possibilities:</p>
+<ul class="simple">
+<li>Real data being subject to forward FFT transform that results in complex data (Hermitian).</li>
+<li>Complex data (Hermitian) being subject to backward FFT transform that results in real data.</li>
+</ul>
+</li>
+</ul>
+<p>The library provides enums to specify transform and array types.</p>
+</div>
+<div class="section" id="batches">
+<h2>Batches<a class="headerlink" href="#batches" title="Permalink to this headline">¶</a></h2>
+<p>The efficiency of the library is improved by utilizing transforms in batches. Sending as much data as possible in a single
+transform call leverages the parallel compute capabilities of devices (GPU devices in particular), and minimizes the penalty
+of control transfer. It is best to think of a device as a high-throughput, high-latency device. Using a networking analogy as
+an example, this approach is similar to having a massively high-bandwidth pipe with very high ping response times. If the client
+is ready to send data to the device for compute, it should be sent in as few API calls as possible and this can be done by batching.
+rocFFT plans have a parameter <cite>number_of_transforms</cite> (this value is also referred to as batch size in various places in the document)
+in <a class="reference internal" href="api.html#_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description" title="rocfft_plan_create"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_create()</span></code></a> to describe the number of transforms being requested. All 1D, 2D, and 3D transforms can be batched.</p>
+</div>
+<div class="section" id="strides-and-distances">
+<h2>Strides and Distances<a class="headerlink" href="#strides-and-distances" title="Permalink to this headline">¶</a></h2>
+<p>Strides and distances enable users to specify custom layout of data using <a class="reference internal" href="api.html#_CPPv239rocfft_plan_description_set_data_layout23rocfft_plan_description17rocfft_array_type17rocfft_array_typePK6size_tPK6size_t6size_tPK6size_t6size_t6size_tPK6size_t6size_t" title="rocfft_plan_description_set_data_layout"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_description_set_data_layout()</span></code></a></p>
+<p>For 1D data, if strides[0] = strideX = 1, successive elements in the first dimension (dimension index 0) are stored
+contiguously in memory. If strideX is a value greater than 1, gaps in memory exist between each element of the vector.
+For multi-dimensional cases; if strides[1] = strideY = LenX for 2D data and strides[2] = strideZ = LenX*LenY for 3D data,
+no gaps exist in memory between each element, and all vectors are stored tightly packed in memory. Here, LenX, LenY, and LenZ denote the
+transform lengths lengths[0], lengths[1], and lengths[2], respectively, which are used to set up the plan.</p>
+<p>Distance is stride that exists between corresponding elements of successive FFT data instances (primitives) in a batch. Distance is measured in units of the memory type;
+complex data measures in complex units, and real data measures in real units. For tightly packed data, the distance between FFT primitives is the size of the FFT primitive,
+such that dist=LenX for 1D data, dist=LenX*LenY for 2D data, and dist=LenX*LenY*LenZ for 3D data. It is possible to set the distance of a plan to be less than the size
+of the FFT vector; typically 1 when doing column (strided) access on packed data. When computing a batch of 1D FFT vectors, if distance == 1, and strideX == length(vector),
+it means data for each logical FFT is read along columns (in this case along the batch). You must verify that the distance and strides are valid, such that each logical
+FFT instance is not overlapping with any other; if not valid, undefined results may occur. A simple example would be to perform a 1D length 4096 on each row of an array of
+1024 rows x 4096 columns of values stored in a column-major array, such as a FORTRAN program might provide. (This would be equivalent to a C or C++ program that has an
+array of 4096 rows x 1024 columns stored in a row-major manner, on which you want to perform a 1-D length 4096 transform on each column.) In this case, specify the
+strides as [1024] and distance as 1.</p>
+</div>
+<div class="section" id="result-placement">
+<h2>Result placement<a class="headerlink" href="#result-placement" title="Permalink to this headline">¶</a></h2>
+<p>The API supports both in-place and not in-place transforms. With in-place transforms, only input buffers are provided to the
+execution API, and the resulting data is written in the same buffer, overwriting the input data. With not in-place transforms, distinct
+output buffers are provided, and the results are written into the output buffer. In this case, input buffer is only read and so data in it is
+preserved after the execution.</p>
+</div>
+<div class="section" id="real-ffts">
+<h2>Real FFTs<a class="headerlink" href="#real-ffts" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="real.html">Real data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="real.html#supported-array-type-combinations">Supported array type combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="real.html#setting-strides">Setting strides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="real.html#examples">Examples</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="real.html" class="btn btn-neutral float-right" title="Real data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to rocFFT’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Advanced Mirco Devices.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

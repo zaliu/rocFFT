@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Real data &mdash; rocFFT 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rocFFT 1.0 documentation" href="index.html"/>
+        <link rel="up" title="rocFFT" href="library.html"/>
+        <link rel="next" title="API" href="api.html"/>
+        <link rel="prev" title="rocFFT" href="library.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rocFFT
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library.html">rocFFT</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#fft-computation">FFT Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#library-setup-and-cleanup">Library Setup and Cleanup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#plans">Plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#data">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#transform-and-array-types">Transform and Array types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#batches">Batches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#strides-and-distances">Strides and Distances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#result-placement">Result placement</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library.html#real-ffts">Real FFTs</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Real data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-array-type-combinations">Supported array type combinations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-strides">Setting strides</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rocFFT</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="library.html">rocFFT</a> &raquo;</li>
+        
+      <li>Real data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/real.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="real-data">
+<h1>Real data<a class="headerlink" href="#real-data" title="Permalink to this headline">¶</a></h1>
+<p>When real data is subject to DFT transformation, the resulting complex output data follows a special property. About half of the
+output is redundant because they are complex conjugates of the other half. This is called the Hermitian redundancy. So, for space
+and performance considerations, it is only necessary to store the non-redundant part of the data. Most FFT libraries use this property to
+offer specific storage layouts for FFTs involving real data. rocFFT provides three enumerated types to deal with real data FFTs:</p>
+<ul class="simple">
+<li>REAL</li>
+<li>HERMITIAN_INTERLEAVED</li>
+<li>HERMITIAN_PLANAR</li>
+</ul>
+<p>The REAL enum specifies that the data is purely real. This can be used to feed real input or get back real output. The
+HERMITIAN_INTERLEAVED and HERMITIAN_PLANAR enums are similar to the corresponding full complex enums in the way
+they store real and imaginary components, but store only about half of the complex output. Client applications can do just a
+forward transform and analyze the output or they can process the output and do a backward transform to get back real data.
+This is illustrated in the following figure.</p>
+<div class="figure" id="id1">
+<img alt="_images/realfft_fwdinv.jpg" src="_images/realfft_fwdinv.jpg" />
+<p class="caption"><span class="caption-text"><strong>Forward and Backward Real FFTs</strong></span></p>
+</div>
+<p>Let us consider a 1D real FFT of length N. The full output looks as shown in following figure.</p>
+<div class="figure" id="id2">
+<img alt="_images/realfft_1dlen.jpg" src="_images/realfft_1dlen.jpg" />
+<p class="caption"><span class="caption-text"><strong>1D Real FFT of Length N</strong></span></p>
+</div>
+<p>Here, C* denotes the complex conjugate. Since the values at indices greater than N/2 can be deduced from the first half
+of the array, rocFFT stores data only up to the index N/2. This means that the output contains only 1 + N/2 complex
+elements, where the division N/2 is rounded down. Examples for even and odd lengths are given below.</p>
+<p>Example for N = 8 is shown in following figure.</p>
+<div class="figure" id="id3">
+<img alt="_images/realfft_ex_n8.jpg" src="_images/realfft_ex_n8.jpg" />
+<p class="caption"><span class="caption-text"><strong>Example for N = 8</strong></span></p>
+</div>
+<p>Example for N = 7 is shown in following figure.</p>
+<div class="figure" id="id4">
+<img alt="_images/realfft_ex_n7.jpg" src="_images/realfft_ex_n7.jpg" />
+<p class="caption"><span class="caption-text"><strong>Example for N = 7</strong></span></p>
+</div>
+<p>For length 8, only (1 + 8/2) = 5 of the output complex numbers are stored, with the index ranging from 0 through 4.
+Similarly for length 7, only (1 + 7/2) = 4 of the output complex numbers are stored, with the index ranging from 0 through 3.
+For 2D and 3D FFTs, the FFT length along the innermost dimension is used to compute the (1 + N/2) value. This is because
+the FFT along the innermost dimension is computed first and is logically a real-to-hermitian transform. The FFTs along
+other dimensions are computed next, and they are simply ‘complex-to-complex’ transforms. For example, assuming Lengths[2]
+is used to set up a 2D real FFT, let N1 = Lengths[1], and N0 = Lengths[0]. The output FFT has N1*(1 + N0/2) complex elements.
+Similarly, for a 3D FFT with Lengths[3] and N2 = Lengths[2], N1 = Lengths[1], and N0 = Lengths[0], the output has N2*N1*(1 + N0/2)
+complex elements.</p>
+</div>
+<div class="section" id="supported-array-type-combinations">
+<h1>Supported array type combinations<a class="headerlink" href="#supported-array-type-combinations" title="Permalink to this headline">¶</a></h1>
+<p>Not In-place transforms:</p>
+<ul class="simple">
+<li>Forward:  REAL to HERMITIAN_INTERLEAVED</li>
+<li>Forward:  REAL to HERMITIAN_PLANAR</li>
+<li>Backward: HERMITIAN_INTERLEAVED to REAL</li>
+<li>Backward: HERMITIAN_PLANAR to REAL</li>
+</ul>
+<p>In-place transforms:</p>
+<ul class="simple">
+<li>Forward:  REAL to HERMITIAN_INTERLEAVED</li>
+<li>Backward: HERMITIAN_INTERLEAVED to REAL</li>
+</ul>
+</div>
+<div class="section" id="setting-strides">
+<h1>Setting strides<a class="headerlink" href="#setting-strides" title="Permalink to this headline">¶</a></h1>
+<p>The library currently requires the user to explicitly set input and output strides for real transforms for non simple cases.
+See the following examples to understand what values to use for input and output strides under different scenarios. These examples show
+typical usages, but the user can allocate the buffers and choose data layout according to their need.</p>
+</div>
+<div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>The following provide figures and examples to explain in detail the real FFT features of this library.</p>
+<p>Here is a schematic that illustrates the forward 1D FFT (real to hermitian).</p>
+<div class="figure" id="id5">
+<img alt="_images/realfft_expl_01.jpg" src="_images/realfft_expl_01.jpg" />
+<p class="caption"><span class="caption-text"><strong>1D FFT - Real to Hermitian</strong></span></p>
+</div>
+<p>Below is a schematic that shows an example of not in-place transform with even N and how strides and distances are set.</p>
+<div class="figure" id="id6">
+<img alt="_images/realfft_expl_02.jpg" src="_images/realfft_expl_02.jpg" />
+<p class="caption"><span class="caption-text"><strong>1D FFT - Real to Hermitian, Example 1</strong></span></p>
+</div>
+<p>Below is a schematic that shows an example of in-place transform with even N and how strides and distances are set.
+Notice that even though we are dealing with only 1 buffer (in-place), the output strides/distance can take different
+values compared to input strides/distance.</p>
+<div class="figure" id="id7">
+<img alt="_images/realfft_expl_03.jpg" src="_images/realfft_expl_03.jpg" />
+<p class="caption"><span class="caption-text"><strong>1D FFT - Real to Hermitian, Example 2</strong></span></p>
+</div>
+<p>Below is a schematic that shows an example of in-place transform with odd N and how strides and distances are set.
+Notice that even though we are dealing with only 1 buffer (in-place), the output strides/distance can take different
+values compared to input strides/distance.</p>
+<div class="figure" id="id8">
+<img alt="_images/realfft_expl_04.jpg" src="_images/realfft_expl_04.jpg" />
+<p class="caption"><span class="caption-text"><strong>1D FFT - Real to Hermitian, Example 3</strong></span></p>
+</div>
+<p>And here is a schematic that illustrates the backward 1D FFT (hermitian to real).</p>
+<div class="figure" id="id9">
+<img alt="_images/realfft_expl_05.jpg" src="_images/realfft_expl_05.jpg" />
+<p class="caption"><span class="caption-text"><strong>1D FFT - Hermitian to Real</strong></span></p>
+</div>
+<p>Below is a schematic that shows an example of in-place transform with even N and how strides and distances are set.
+Notice that even though we are dealing with only 1 buffer (in-place), the output strides/distance can take different
+values compared to input strides/distance.</p>
+<div class="figure" id="id10">
+<img alt="_images/realfft_expl_06.jpg" src="_images/realfft_expl_06.jpg" />
+<p class="caption"><span class="caption-text"><strong>1D FFT - Hermitian to Real, Example</strong></span></p>
+</div>
+<p>And here is a schematic that illustrates the in-place forward 2D FFT (real to hermitian) .</p>
+<div class="figure" id="id11">
+<img alt="_images/realfft_expl_07.jpg" src="_images/realfft_expl_07.jpg" />
+<p class="caption"><span class="caption-text"><strong>2D FFT - Real to Hermitian In Place</strong></span></p>
+</div>
+<p>Below is a schematic that shows an example of in-place 2D transform and how strides and distances are set.
+Notice that even though we are dealing with only 1 buffer (in-place), the output strides/distance can take different
+values compared to input strides/distance.</p>
+<div class="figure" id="id12">
+<img alt="_images/realfft_expl_08.jpg" src="_images/realfft_expl_08.jpg" />
+<p class="caption"><span class="caption-text"><strong>2D FFT - Real to Hermitian, Example</strong></span></p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="library.html" class="btn btn-neutral" title="rocFFT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Advanced Mirco Devices.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
