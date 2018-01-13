@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; rocFFT 1.0 documentation</title>
+  <title>API &mdash; rocFFT 0.8 documentation</title>
   
 
   
@@ -35,7 +35,8 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rocFFT 1.0 documentation" href="index.html"/>
+    <link rel="top" title="rocFFT 0.8 documentation" href="index.html"/>
+        <link rel="next" title="All API" href="allapi.html"/>
         <link rel="prev" title="Real data" href="real.html"/> 
 
   
@@ -65,7 +66,7 @@
             
             
               <div class="version">
-                1.0
+                0.8
               </div>
             
           
@@ -92,7 +93,17 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="library.html">rocFFT</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#types">Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#library-setup-and-cleanup">Library Setup and Cleanup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plan">Plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plan-description">Plan description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execution">Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execution-info">Execution info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="allapi.html">All API</a></li>
 </ul>
 
             
@@ -160,36 +171,357 @@
 </div>
 <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
-<dl class="file">
-<dt>
-<span class="target" id="rocfft_8h"></span><em>file</em> <code class="descname">rocfft.h</code></dt>
-<dd><p><a class="reference internal" href="#rocfft_8h"><span class="std std-ref">rocfft.h</span></a> defines all the public interfaces and types </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Typedefs</p>
+<p>This section provides details of the library API</p>
+<div class="section" id="types">
+<h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
+<p>There are few data structures that are internal to the library. The pointer types to these
+structures are given below. The user would need to use these types to create handles and pass them
+between different library functions.</p>
 <dl class="type">
 <dt id="_CPPv211rocfft_plan">
-<span id="rocfft_plan"></span><span class="target" id="rocfft_8h_1aecca10c6ee20e6710a6fb7e39d69aeae"></span><em class="property">typedef </em><em class="property">struct</em> rocfft_plan_t *<code class="descname">rocfft_plan</code><a class="headerlink" href="#_CPPv211rocfft_plan" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Opaque pointer type to plan structure. </p>
+<span id="rocfft_plan"></span><span class="target" id="rocfft_8h_1aecca10c6ee20e6710a6fb7e39d69aeae"></span><em class="property">typedef </em><em class="property">struct</em> rocfft_plan_t *<code class="descclassname"></code><code class="descname">rocfft_plan</code><a class="headerlink" href="#_CPPv211rocfft_plan" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pointer type to plan structure. </p>
+<p>This type is used to declare a plan handle that can be initialized with rocfft_plan_create </p>
 </dd></dl>
 
 <dl class="type">
 <dt id="_CPPv223rocfft_plan_description">
-<span id="rocfft_plan_description"></span><span class="target" id="rocfft_8h_1ad25e39e540dd29040edf589b2ef503c2"></span><em class="property">typedef </em><em class="property">struct</em> rocfft_plan_description_t *<code class="descname">rocfft_plan_description</code><a class="headerlink" href="#_CPPv223rocfft_plan_description" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Opaque pointer type to plan description structure. </p>
+<span id="rocfft_plan_description"></span><span class="target" id="rocfft_8h_1ad25e39e540dd29040edf589b2ef503c2"></span><em class="property">typedef </em><em class="property">struct</em> rocfft_plan_description_t *<code class="descclassname"></code><code class="descname">rocfft_plan_description</code><a class="headerlink" href="#_CPPv223rocfft_plan_description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pointer type to plan description structure. </p>
+<p>This type is used to declare a plan description handle that can be initialized with rocfft_plan_description_create </p>
 </dd></dl>
 
 <dl class="type">
 <dt id="_CPPv221rocfft_execution_info">
-<span id="rocfft_execution_info"></span><span class="target" id="rocfft_8h_1a9ee8a9967030355964ecf5f770c214d5"></span><em class="property">typedef </em><em class="property">struct</em> rocfft_execution_info_t *<code class="descname">rocfft_execution_info</code><a class="headerlink" href="#_CPPv221rocfft_execution_info" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Opaque pointer type to execution info structure. </p>
+<span id="rocfft_execution_info"></span><span class="target" id="rocfft_8h_1a9ee8a9967030355964ecf5f770c214d5"></span><em class="property">typedef </em><em class="property">struct</em> rocfft_execution_info_t *<code class="descclassname"></code><code class="descname">rocfft_execution_info</code><a class="headerlink" href="#_CPPv221rocfft_execution_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pointer type to execution info structure. </p>
+<p>This type is used to declare an execution info handle that can be initialized with rocfft_execution_info_create </p>
 </dd></dl>
 
 </div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Enums</p>
+<div class="section" id="library-setup-and-cleanup">
+<h2>Library Setup and Cleanup<a class="headerlink" href="#library-setup-and-cleanup" title="Permalink to this headline">¶</a></h2>
+<p>The following functions deals with initialization and cleanup of the library.</p>
+<dl class="function">
+<dt id="_CPPv212rocfft_setupv">
+<span id="rocfft_setup"></span><span class="target" id="rocfft_8h_1a0f4298bc98ad20ccd864377423fc28b2"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv212rocfft_setupv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Library setup function, called once in program before start of library use. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv214rocfft_cleanupv">
+<span id="rocfft_cleanup"></span><span class="target" id="rocfft_8h_1a2b1cd56e51af5d81266be246f8cad90d"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv214rocfft_cleanupv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Library cleanup function, called once in program after end of library use. </p>
+</dd></dl>
+
+</div>
+<div class="section" id="plan">
+<h2>Plan<a class="headerlink" href="#plan" title="Permalink to this headline">¶</a></h2>
+<p>The following functions are used to create and destroy plan objects.</p>
+<dl class="function">
+<dt id="_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description">
+<span id="rocfft_plan_create__rocfft_planP.rocfft_result_placement.rocfft_transform_type.rocfft_precision.s.sCP.s.rocfft_plan_descriptionC"></span><span class="target" id="rocfft_8h_1ae1c36eca302a0d6fdf2ff02f819ce9e1"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_create</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> *<em>plan</em>, <a class="reference internal" href="allapi.html#_CPPv223rocfft_result_placement" title="rocfft_result_placement">rocfft_result_placement</a> <em>placement</em>, <a class="reference internal" href="allapi.html#_CPPv221rocfft_transform_type" title="rocfft_transform_type">rocfft_transform_type</a> <em>transform_type</em>, <a class="reference internal" href="allapi.html#_CPPv216rocfft_precision" title="rocfft_precision">rocfft_precision</a> <em>precision</em>, size_t <em>dimensions</em>, <em class="property">const</em> size_t *<em>lengths</em>, size_t <em>number_of_transforms</em>, <em class="property">const</em> <a class="reference internal" href="allapi.html#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create an FFT plan. </p>
+<p>This API creates a plan, which the user can execute subsequently. This function takes many of the fundamental parameters needed to specify a transform. The parameters are self explanatory. The dimensions parameter can take a value of 1,2 or 3. The ‘lengths’ array specifies size of data in each dimension. Note that lengths[0] is the size of the innermost dimension, lengths[1] is the next higher dimension and so on. The ‘number_of_transforms’ parameter specifies how many transforms (of the same kind) needs to be computed. By specifying a value greater than 1, a batch of transforms can be computed with a single api call. Additionally, a handle to a plan description can be passed for more detailed transforms. For simple transforms, this parameter can be set to null ptr.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
+<li><code class="docutils literal"><span class="pre">placement</span></code>: placement of result </li>
+<li><code class="docutils literal"><span class="pre">transform_type</span></code>: type of transform </li>
+<li><code class="docutils literal"><span class="pre">precision</span></code>: precision </li>
+<li><code class="docutils literal"><span class="pre">dimensions</span></code>: dimensions </li>
+<li><code class="docutils literal"><span class="pre">lengths</span></code>: dimensions sized array of transform lengths </li>
+<li><code class="docutils literal"><span class="pre">number_of_transforms</span></code>: number of transforms </li>
+<li><code class="docutils literal"><span class="pre">description</span></code>: description handle created by rocfft_plan_description_create; can be null ptr for simple transforms </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv219rocfft_plan_destroy11rocfft_plan">
+<span id="rocfft_plan_destroy__rocfft_plan"></span><span class="target" id="rocfft_8h_1a2338317b1790f96b4db891e45a2581c2"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_destroy</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> <em>plan</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv219rocfft_plan_destroy11rocfft_plan" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destroy an FFT plan. </p>
+<p>This API frees the plan. This function destructs a plan after it is no longer needed. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<p>The following functions are used to query for information after a plan is created.</p>
+<dl class="function">
+<dt id="_CPPv232rocfft_plan_get_work_buffer_sizeK11rocfft_planP6size_t">
+<span id="rocfft_plan_get_work_buffer_size__rocfft_planC.sP"></span><span class="target" id="rocfft_8h_1a2b8d6a49fbb5204023776715f971e055"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_get_work_buffer_size</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="allapi.html#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> <em>plan</em>, size_t *<em>size_in_bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv232rocfft_plan_get_work_buffer_sizeK11rocfft_planP6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get work buffer size. </p>
+<p>This is one of plan query functions to obtain information regarding a plan. This API gets the work buffer size. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
+<li><code class="docutils literal"><span class="pre">size_in_bytes</span></code>: size of needed work buffer in bytes </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv221rocfft_plan_get_printK11rocfft_plan">
+<span id="rocfft_plan_get_print__rocfft_planC"></span><span class="target" id="rocfft_8h_1ab08a774ca1a58be2bcc8bde89880487f"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_get_print</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="allapi.html#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> <em>plan</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv221rocfft_plan_get_printK11rocfft_plan" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Print all plan information. </p>
+<p>This is one of plan query functions to obtain information regarding a plan. This API prints all plan info to stdout to help user verify plan specification. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="section" id="plan-description">
+<h2>Plan description<a class="headerlink" href="#plan-description" title="Permalink to this headline">¶</a></h2>
+<p>Most of the times, <a class="reference internal" href="allapi.html#_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description" title="rocfft_plan_create"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_create()</span></code></a> is all is needed to fully specify a transform.
+And the description object can be skipped. But when a transform specification has more details
+a description object need to be created and set up and the handle passed to the <a class="reference internal" href="allapi.html#_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description" title="rocfft_plan_create"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_create()</span></code></a>.
+Functions referred below can be used to manage plan description in order to specify more transform details.
+The plan description object can be safely deleted after call to the plan api <a class="reference internal" href="allapi.html#_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description" title="rocfft_plan_create"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_plan_create()</span></code></a>.</p>
+<dl class="function">
+<dt id="_CPPv230rocfft_plan_description_createP23rocfft_plan_description">
+<span id="rocfft_plan_description_create__rocfft_plan_descriptionP"></span><span class="target" id="rocfft_8h_1a3c38da7775a4e0425a589c5486c6ffc4"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_description_create</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> *<em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv230rocfft_plan_description_createP23rocfft_plan_description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create plan description. </p>
+<p>This API creates a plan description with which the user can set more plan properties <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">description</span></code>: plan description handle </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv231rocfft_plan_description_destroy23rocfft_plan_description">
+<span id="rocfft_plan_description_destroy__rocfft_plan_description"></span><span class="target" id="rocfft_8h_1a9e5f32c5eb787b7c8c3f96402a017f3f"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_description_destroy</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv231rocfft_plan_description_destroy23rocfft_plan_description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destroy a plan description. </p>
+<p>This API frees the plan description <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">description</span></code>: plan description handle </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv239rocfft_plan_description_set_scale_float23rocfft_plan_descriptionf">
+<span id="rocfft_plan_description_set_scale_float__rocfft_plan_description.float"></span><span class="target" id="rocfft_8h_1a48901a87b2610d8b48b2efa5cc103240"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_description_set_scale_float</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em>, float <em>scale</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv239rocfft_plan_description_set_scale_float23rocfft_plan_descriptionf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set scaling factor in single precision. </p>
+<p>This is one of plan description functions to specify optional additional plan properties using the description handle. This API specifies scaling factor. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">description</span></code>: description handle </li>
+<li><code class="docutils literal"><span class="pre">scale</span></code>: scaling factor </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv240rocfft_plan_description_set_scale_double23rocfft_plan_descriptiond">
+<span id="rocfft_plan_description_set_scale_double__rocfft_plan_description.double"></span><span class="target" id="rocfft_8h_1a051691e5567fb5931ade694a9dfe7033"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_description_set_scale_double</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em>, double <em>scale</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv240rocfft_plan_description_set_scale_double23rocfft_plan_descriptiond" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set scaling factor in double precision. </p>
+<p>This is one of plan description functions to specify optional additional plan properties using the description handle. This API specifies scaling factor. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">description</span></code>: description handle </li>
+<li><code class="docutils literal"><span class="pre">scale</span></code>: scaling factor </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv239rocfft_plan_description_set_data_layout23rocfft_plan_description17rocfft_array_type17rocfft_array_typePK6size_tPK6size_t6size_tPK6size_t6size_t6size_tPK6size_t6size_t">
+<span id="rocfft_plan_description_set_data_layout__rocfft_plan_description.rocfft_array_type.rocfft_array_type.sCP.sCP.s.sCP.s.s.sCP.s"></span><span class="target" id="rocfft_8h_1a7bf2a95631d12bf5bb2c1ef3f2a208d5"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_description_set_data_layout</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em>, <a class="reference internal" href="allapi.html#_CPPv217rocfft_array_type" title="rocfft_array_type">rocfft_array_type</a> <em>in_array_type</em>, <a class="reference internal" href="allapi.html#_CPPv217rocfft_array_type" title="rocfft_array_type">rocfft_array_type</a> <em>out_array_type</em>, <em class="property">const</em> size_t *<em>in_offsets</em>, <em class="property">const</em> size_t *<em>out_offsets</em>, size_t <em>in_strides_size</em>, <em class="property">const</em> size_t *<em>in_strides</em>, size_t <em>in_distance</em>, size_t <em>out_strides_size</em>, <em class="property">const</em> size_t *<em>out_strides</em>, size_t <em>out_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv239rocfft_plan_description_set_data_layout23rocfft_plan_description17rocfft_array_type17rocfft_array_typePK6size_tPK6size_t6size_tPK6size_t6size_t6size_tPK6size_t6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set data layout. </p>
+<p>This is one of plan description functions to specify optional additional plan properties using the description handle. This API specifies the layout of buffers. This function can be used to specify input and output array types. Not all combinations of array types are supported and error code will be returned for unsupported cases. Additionally, input and output buffer offsets can be specified. The function can be used to specify custom layout of data, with the ability to specify stride between consecutive elements in all dimensions. Also, distance between transform data members can be specified. The library will choose appropriate defaults if offsets/strides are set to null ptr and/or distances set to 0.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">description</span></code>: description handle </li>
+<li><code class="docutils literal"><span class="pre">in_array_type</span></code>: array type of input buffer </li>
+<li><code class="docutils literal"><span class="pre">out_array_type</span></code>: array type of output buffer </li>
+<li><code class="docutils literal"><span class="pre">in_offsets</span></code>: offsets, in element units, to start of data in input buffer </li>
+<li><code class="docutils literal"><span class="pre">out_offsets</span></code>: offsets, in element units, to start of data in output buffer </li>
+<li><code class="docutils literal"><span class="pre">in_strides_size</span></code>: size of in_strides array (must be equal to transform dimensions) </li>
+<li><code class="docutils literal"><span class="pre">in_strides</span></code>: array of strides, in each dimension, of input buffer; if set to null ptr library chooses defaults </li>
+<li><code class="docutils literal"><span class="pre">in_distance</span></code>: distance between start of each data instance in input buffer </li>
+<li><code class="docutils literal"><span class="pre">out_strides_size</span></code>: size of out_strides array (must be equal to transform dimensions) </li>
+<li><code class="docutils literal"><span class="pre">out_strides</span></code>: array of strides, in each dimension, of output buffer; if set to null ptr library chooses defaults </li>
+<li><code class="docutils literal"><span class="pre">out_distance</span></code>: distance between start of each data instance in output buffer </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv235rocfft_plan_description_set_devices23rocfft_plan_descriptionPv6size_t">
+<span id="rocfft_plan_description_set_devices__rocfft_plan_description.voidP.s"></span><span class="target" id="rocfft_8h_1aaab37b2058ea36e92bf9142b8d92d1d3"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_plan_description_set_devices</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em>, void *<em>devices</em>, size_t <em>number_of_devices</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv235rocfft_plan_description_set_devices23rocfft_plan_descriptionPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set devices in plan description. </p>
+<p>This is one of plan description functions to specify optional additional plan properties using the description handle. This API specifies what compute devices to target. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">description</span></code>: description handle </li>
+<li><code class="docutils literal"><span class="pre">devices</span></code>: array of device identifiers </li>
+<li><code class="docutils literal"><span class="pre">number_of_devices</span></code>: number of devices (size of devices array) </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="section" id="execution">
+<h2>Execution<a class="headerlink" href="#execution" title="Permalink to this headline">¶</a></h2>
+<p>The following details the execution function. After a plan has been created, it can be used
+to compute a transform on specified data. Aspects of the execution can be controlled and any useful
+information returned to the user.</p>
+<dl class="function">
+<dt id="_CPPv214rocfft_executeK11rocfft_planA_PvA_Pv21rocfft_execution_info">
+<span id="rocfft_execute__rocfft_planC.voidPA.voidPA.rocfft_execution_info"></span><span class="target" id="rocfft_8h_1a0f306349a116698ac30ccdb3a1201d71"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_execute</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="allapi.html#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> <em>plan</em>, void *<em>in_buffer</em>[], void *<em>out_buffer</em>[], <a class="reference internal" href="allapi.html#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv214rocfft_executeK11rocfft_planA_PvA_Pv21rocfft_execution_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Execute an FFT plan. </p>
+<p>This API executes an FFT plan on buffers given by the user. If the transform is in-place, only the input buffer is needed and the output buffer parameter can be set to NULL. For not in-place transforms, output buffers have to be specified. Note that both input and output buffer are arrays of pointers, this is to facilitate passing planar buffers where real and imaginary parts are in 2 separate buffers. For the default interleaved format, just a unit sized array holding the pointer to input/output buffer need to be passed. The final parameter in this function is an execution_info handle. This parameter serves as a way for the user to control execution, as well as for the library to pass any execution related information back to the user.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
+<li><code class="docutils literal"><span class="pre">in_buffer</span></code>: array (of size 1 for interleaved data, of size 2 for planar data) of input buffers </li>
+<li><code class="docutils literal"><span class="pre">out_buffer</span></code>: array (of size 1 for interleaved data, of size 2 for planar data) of output buffers, can be nullptr for inplace result placement </li>
+<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle created by rocfft_execution_info_create </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="section" id="execution-info">
+<h2>Execution info<a class="headerlink" href="#execution-info" title="Permalink to this headline">¶</a></h2>
+<p>The execution api <a class="reference internal" href="allapi.html#_CPPv214rocfft_executeK11rocfft_planA_PvA_Pv21rocfft_execution_info" title="rocfft_execute"><code class="xref cpp cpp-func docutils literal"><span class="pre">rocfft_execute()</span></code></a> takes a rocfft_execution_info parameter. This parameter needs
+to be created and setup by the user and passed to the execution api. The execution info handle encapsulates
+information such as execution mode, pointer to any work buffer etc. It can also hold information that are
+side effect of execution such as event objects. The following functions deal with managing execution info
+object. Note that the <em>set</em> functions below need to be called before execution and <em>get</em> functions after
+execution.</p>
+<dl class="function">
+<dt id="_CPPv228rocfft_execution_info_createP21rocfft_execution_info">
+<span id="rocfft_execution_info_create__rocfft_execution_infoP"></span><span class="target" id="rocfft_8h_1aafb626ad7f63900a68fc913bf8c45e5b"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_execution_info_create</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> *<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv228rocfft_execution_info_createP21rocfft_execution_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create execution info. </p>
+<p>This API creates an execution info with which the user can control plan execution &amp; retrieve execution information <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv229rocfft_execution_info_destroy21rocfft_execution_info">
+<span id="rocfft_execution_info_destroy__rocfft_execution_info"></span><span class="target" id="rocfft_8h_1a2c636a589cf9b2356dc94a4042017862"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_execution_info_destroy</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv229rocfft_execution_info_destroy21rocfft_execution_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destroy an execution info. </p>
+<p>This API frees the execution info <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv237rocfft_execution_info_set_work_buffer21rocfft_execution_infoPv6size_t">
+<span id="rocfft_execution_info_set_work_buffer__rocfft_execution_info.voidP.s"></span><span class="target" id="rocfft_8h_1a08ea96bd88efb4a30421ccd1566588a1"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_execution_info_set_work_buffer</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em>, void *<em>work_buffer</em>, size_t <em>size_in_bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv237rocfft_execution_info_set_work_buffer21rocfft_execution_infoPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set work buffer in execution info. </p>
+<p>This is one of the execution info functions to specify optional additional information to control execution. This API specifies work buffer needed. It has to be called before the call to rocfft_execute. When a non-zero value is obtained from rocfft_plan_get_work_buffer_size, that means the library needs a work buffer to compute the transform. In this case, the user has to allocate the work buffer and pass it to the library via this api.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
+<li><code class="docutils literal"><span class="pre">work_buffer</span></code>: work buffer </li>
+<li><code class="docutils literal"><span class="pre">size_in_bytes</span></code>: size of work buffer in bytes </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv230rocfft_execution_info_set_mode21rocfft_execution_info21rocfft_execution_mode">
+<span id="rocfft_execution_info_set_mode__rocfft_execution_info.rocfft_execution_mode"></span><span class="target" id="rocfft_8h_1a607a95441e610e2998e86d6843d3e623"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_execution_info_set_mode</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em>, <a class="reference internal" href="allapi.html#_CPPv221rocfft_execution_mode" title="rocfft_execution_mode">rocfft_execution_mode</a> <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv230rocfft_execution_info_set_mode21rocfft_execution_info21rocfft_execution_mode" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set execution mode in execution info. </p>
+<p>This is one of the execution info functions to specify optional additional information to control execution. This API specifies execution mode. It has to be called before the call to rocfft_execute. Appropriate enumeration value can be specified to control blocking/non-blocking behavior of the rocfft_execute call. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
+<li><code class="docutils literal"><span class="pre">mode</span></code>: execution mode </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv232rocfft_execution_info_set_stream21rocfft_execution_infoPv">
+<span id="rocfft_execution_info_set_stream__rocfft_execution_info.voidP"></span><span class="target" id="rocfft_8h_1acc58835e1040ad7f8225f67bc849d957"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_execution_info_set_stream</code><span class="sig-paren">(</span><a class="reference internal" href="allapi.html#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em>, void *<em>stream</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv232rocfft_execution_info_set_stream21rocfft_execution_infoPv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set stream in execution info. </p>
+<p>This is one of the execution info functions to specify optional additional information to control execution. This API specifies compute stream. It has to be called before the call to rocfft_execute. It is the underlying device queue/stream where the library computations would be inserted. The library assumes user has created such a stream in the program and merely assigns work to the stream. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
+<li><code class="docutils literal"><span class="pre">stream</span></code>: underlying compute stream </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv232rocfft_execution_info_get_eventsK21rocfft_execution_infoPPvP6size_t">
+<span id="rocfft_execution_info_get_events__rocfft_execution_infoC.voidPP.sP"></span><span class="target" id="rocfft_8h_1adb60cf2949894ff95e6d09a0c206717b"></span><a class="reference internal" href="allapi.html#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descclassname"></code><code class="descname">rocfft_execution_info_get_events</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="allapi.html#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em>, void **<em>events</em>, size_t *<em>number_of_events</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv232rocfft_execution_info_get_eventsK21rocfft_execution_infoPPvP6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get events from execution info. </p>
+<p>This is one of the execution info functions to retrieve information from execution. This API obtains event information. It has to be called after the call to rocfft_execute. This gets handles to events that the library created around one or more kernel launches during execution. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
+<li><code class="docutils literal"><span class="pre">events</span></code>: array of events </li>
+<li><code class="docutils literal"><span class="pre">number_of_events</span></code>: number of events (size of events array) </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="section" id="enumerations">
+<h2>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline">¶</a></h2>
+<p>This section provides all the enumerations used.</p>
 <dl class="type">
 <dt id="_CPPv213rocfft_status">
-<span id="rocfft_status"></span><span class="target" id="rocfft_8h_1a6c303a11144ba0794b22f2668bef6c10"></span><em class="property">enum </em><code class="descname">rocfft_status</code><a class="headerlink" href="#_CPPv213rocfft_status" title="Permalink to this definition">¶</a><br /></dt>
+<span id="rocfft_status"></span><span class="target" id="rocfft_8h_1a6c303a11144ba0794b22f2668bef6c10"></span><em class="property">enum </em><code class="descclassname"></code><code class="descname">rocfft_status</code><a class="headerlink" href="#_CPPv213rocfft_status" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>rocfft status/error codes </p>
 <p><em>Values:</em></p>
 <dl class="enumerator">
@@ -236,7 +568,7 @@
 
 <dl class="type">
 <dt id="_CPPv221rocfft_transform_type">
-<span id="rocfft_transform_type"></span><span class="target" id="rocfft_8h_1a3728f124c59954d96726d6da5b22c4ab"></span><em class="property">enum </em><code class="descname">rocfft_transform_type</code><a class="headerlink" href="#_CPPv221rocfft_transform_type" title="Permalink to this definition">¶</a><br /></dt>
+<span id="rocfft_transform_type"></span><span class="target" id="rocfft_8h_1a3728f124c59954d96726d6da5b22c4ab"></span><em class="property">enum </em><code class="descclassname"></code><code class="descname">rocfft_transform_type</code><a class="headerlink" href="#_CPPv221rocfft_transform_type" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Type of transform. </p>
 <p><em>Values:</em></p>
 <dl class="enumerator">
@@ -263,7 +595,7 @@
 
 <dl class="type">
 <dt id="_CPPv216rocfft_precision">
-<span id="rocfft_precision"></span><span class="target" id="rocfft_8h_1aee35b558738dd61471b175ff0cbd05fd"></span><em class="property">enum </em><code class="descname">rocfft_precision</code><a class="headerlink" href="#_CPPv216rocfft_precision" title="Permalink to this definition">¶</a><br /></dt>
+<span id="rocfft_precision"></span><span class="target" id="rocfft_8h_1aee35b558738dd61471b175ff0cbd05fd"></span><em class="property">enum </em><code class="descclassname"></code><code class="descname">rocfft_precision</code><a class="headerlink" href="#_CPPv216rocfft_precision" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Precision. </p>
 <p><em>Values:</em></p>
 <dl class="enumerator">
@@ -280,7 +612,7 @@
 
 <dl class="type">
 <dt id="_CPPv223rocfft_result_placement">
-<span id="rocfft_result_placement"></span><span class="target" id="rocfft_8h_1aa9ae6a5843775ad7446e90fe67c5c50a"></span><em class="property">enum </em><code class="descname">rocfft_result_placement</code><a class="headerlink" href="#_CPPv223rocfft_result_placement" title="Permalink to this definition">¶</a><br /></dt>
+<span id="rocfft_result_placement"></span><span class="target" id="rocfft_8h_1aa9ae6a5843775ad7446e90fe67c5c50a"></span><em class="property">enum </em><code class="descclassname"></code><code class="descname">rocfft_result_placement</code><a class="headerlink" href="#_CPPv223rocfft_result_placement" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Result placement. </p>
 <p><em>Values:</em></p>
 <dl class="enumerator">
@@ -297,7 +629,7 @@
 
 <dl class="type">
 <dt id="_CPPv217rocfft_array_type">
-<span id="rocfft_array_type"></span><span class="target" id="rocfft_8h_1a48d8dde0add00914bd8c639790ba29e1"></span><em class="property">enum </em><code class="descname">rocfft_array_type</code><a class="headerlink" href="#_CPPv217rocfft_array_type" title="Permalink to this definition">¶</a><br /></dt>
+<span id="rocfft_array_type"></span><span class="target" id="rocfft_8h_1a48d8dde0add00914bd8c639790ba29e1"></span><em class="property">enum </em><code class="descclassname"></code><code class="descname">rocfft_array_type</code><a class="headerlink" href="#_CPPv217rocfft_array_type" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Array type. </p>
 <p><em>Values:</em></p>
 <dl class="enumerator">
@@ -329,7 +661,7 @@
 
 <dl class="type">
 <dt id="_CPPv221rocfft_execution_mode">
-<span id="rocfft_execution_mode"></span><span class="target" id="rocfft_8h_1a7e5bca613a3ece2af5bc229631f960e7"></span><em class="property">enum </em><code class="descname">rocfft_execution_mode</code><a class="headerlink" href="#_CPPv221rocfft_execution_mode" title="Permalink to this definition">¶</a><br /></dt>
+<span id="rocfft_execution_mode"></span><span class="target" id="rocfft_8h_1a7e5bca613a3ece2af5bc229631f960e7"></span><em class="property">enum </em><code class="descclassname"></code><code class="descname">rocfft_execution_mode</code><a class="headerlink" href="#_CPPv221rocfft_execution_mode" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Execution mode. </p>
 <p><em>Values:</em></p>
 <dl class="enumerator">
@@ -350,292 +682,6 @@
 </dd></dl>
 
 </div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Functions</p>
-<dl class="function">
-<dt id="_CPPv212rocfft_setupv">
-<span id="rocfft_setup"></span><span class="target" id="rocfft_8h_1a0f4298bc98ad20ccd864377423fc28b2"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv212rocfft_setupv" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Library setup function, called once in program before start of library use. </p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv214rocfft_cleanupv">
-<span id="rocfft_cleanup"></span><span class="target" id="rocfft_8h_1a2b1cd56e51af5d81266be246f8cad90d"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv214rocfft_cleanupv" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Library cleanup function, called once in program after end of library use. </p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description">
-<span id="rocfft_plan_create__rocfft_planP.rocfft_result_placement.rocfft_transform_type.rocfft_precision.s.sCP.s.rocfft_plan_descriptionC"></span><span class="target" id="rocfft_8h_1ae1c36eca302a0d6fdf2ff02f819ce9e1"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_create</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> *<em>plan</em>, <a class="reference internal" href="#_CPPv223rocfft_result_placement" title="rocfft_result_placement">rocfft_result_placement</a> <em>placement</em>, <a class="reference internal" href="#_CPPv221rocfft_transform_type" title="rocfft_transform_type">rocfft_transform_type</a> <em>transform_type</em>, <a class="reference internal" href="#_CPPv216rocfft_precision" title="rocfft_precision">rocfft_precision</a> <em>precision</em>, size_t <em>dimensions</em>, <em class="property">const</em> size_t *<em>lengths</em>, size_t <em>number_of_transforms</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv218rocfft_plan_createP11rocfft_plan23rocfft_result_placement21rocfft_transform_type16rocfft_precision6size_tPK6size_t6size_tK23rocfft_plan_description" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Create an FFT plan. </p>
-<p>This API creates a plan, which the user can execute subsequently <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
-<li><code class="docutils literal"><span class="pre">placement</span></code>: placement of result </li>
-<li><code class="docutils literal"><span class="pre">transform_type</span></code>: type of transform </li>
-<li><code class="docutils literal"><span class="pre">precision</span></code>: precision </li>
-<li><code class="docutils literal"><span class="pre">dimensions</span></code>: dimensions </li>
-<li><code class="docutils literal"><span class="pre">lengths</span></code>: dimensions sized array of transform lengths </li>
-<li><code class="docutils literal"><span class="pre">number_of_transforms</span></code>: number of transforms </li>
-<li><code class="docutils literal"><span class="pre">description</span></code>: description handle created by rocfft_plan_description_create </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv214rocfft_executeK11rocfft_planA_PvA_Pv21rocfft_execution_info">
-<span id="rocfft_execute__rocfft_planC.voidPA.voidPA.rocfft_execution_info"></span><span class="target" id="rocfft_8h_1a0f306349a116698ac30ccdb3a1201d71"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_execute</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> <em>plan</em>, void *<em>in_buffer</em>[], void *<em>out_buffer</em>[], <a class="reference internal" href="#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv214rocfft_executeK11rocfft_planA_PvA_Pv21rocfft_execution_info" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Execute an FFT plan. </p>
-<p>This API executes an FFT plan on buffers given by the user <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
-<li><code class="docutils literal"><span class="pre">in_buffer</span></code>: array (of size 1 for interleaved data, of size 2 for planar data) of input buffers </li>
-<li><code class="docutils literal"><span class="pre">out_buffer</span></code>: array (of size 1 for interleaved data, of size 2 for planar data) of output buffers, can be nullptr for inplace result placement </li>
-<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle created by rocfft_execution_info_create </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv219rocfft_plan_destroy11rocfft_plan">
-<span id="rocfft_plan_destroy__rocfft_plan"></span><span class="target" id="rocfft_8h_1a2338317b1790f96b4db891e45a2581c2"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_destroy</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> <em>plan</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv219rocfft_plan_destroy11rocfft_plan" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Destroy an FFT plan. </p>
-<p>This API frees the plan <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv239rocfft_plan_description_set_scale_float23rocfft_plan_descriptionf">
-<span id="rocfft_plan_description_set_scale_float__rocfft_plan_description.float"></span><span class="target" id="rocfft_8h_1a48901a87b2610d8b48b2efa5cc103240"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_description_set_scale_float</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em>, float <em>scale</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv239rocfft_plan_description_set_scale_float23rocfft_plan_descriptionf" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Set scaling factor in single precision. </p>
-<p>This is one of plan description funtions to specify optional additional plan properties using the description handle. This API specifies scaling factor. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">description</span></code>: description handle </li>
-<li><code class="docutils literal"><span class="pre">scale</span></code>: scaling factor </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv240rocfft_plan_description_set_scale_double23rocfft_plan_descriptiond">
-<span id="rocfft_plan_description_set_scale_double__rocfft_plan_description.double"></span><span class="target" id="rocfft_8h_1a051691e5567fb5931ade694a9dfe7033"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_description_set_scale_double</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em>, double <em>scale</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv240rocfft_plan_description_set_scale_double23rocfft_plan_descriptiond" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Set scaling factor in double precision. </p>
-<p>This is one of plan description funtions to specify optional additional plan properties using the description handle. This API specifies scaling factor. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">description</span></code>: description handle </li>
-<li><code class="docutils literal"><span class="pre">scale</span></code>: scaling factor </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv239rocfft_plan_description_set_data_layout23rocfft_plan_description17rocfft_array_type17rocfft_array_typePK6size_tPK6size_t6size_tPK6size_t6size_t6size_tPK6size_t6size_t">
-<span id="rocfft_plan_description_set_data_layout__rocfft_plan_description.rocfft_array_type.rocfft_array_type.sCP.sCP.s.sCP.s.s.sCP.s"></span><span class="target" id="rocfft_8h_1a7bf2a95631d12bf5bb2c1ef3f2a208d5"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_description_set_data_layout</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em>, <a class="reference internal" href="#_CPPv217rocfft_array_type" title="rocfft_array_type">rocfft_array_type</a> <em>in_array_type</em>, <a class="reference internal" href="#_CPPv217rocfft_array_type" title="rocfft_array_type">rocfft_array_type</a> <em>out_array_type</em>, <em class="property">const</em> size_t *<em>in_offsets</em>, <em class="property">const</em> size_t *<em>out_offsets</em>, size_t <em>in_strides_size</em>, <em class="property">const</em> size_t *<em>in_strides</em>, size_t <em>in_distance</em>, size_t <em>out_strides_size</em>, <em class="property">const</em> size_t *<em>out_strides</em>, size_t <em>out_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv239rocfft_plan_description_set_data_layout23rocfft_plan_description17rocfft_array_type17rocfft_array_typePK6size_tPK6size_t6size_tPK6size_t6size_t6size_tPK6size_t6size_t" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Set data layout. </p>
-<p>This is one of plan description funtions to specify optional additional plan properties using the description handle. This API specifies the layout of buffers. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">description</span></code>: description handle </li>
-<li><code class="docutils literal"><span class="pre">in_array_type</span></code>: array type of input buffer </li>
-<li><code class="docutils literal"><span class="pre">out_array_type</span></code>: array type of output buffer </li>
-<li><code class="docutils literal"><span class="pre">in_offsets</span></code>: offsets, in element units, to start of data in input buffer </li>
-<li><code class="docutils literal"><span class="pre">out_offsets</span></code>: offsets, in element units, to start of data in output buffer </li>
-<li><code class="docutils literal"><span class="pre">in_strides_size</span></code>: size of in_strides array (must be equal to transform dimensions) </li>
-<li><code class="docutils literal"><span class="pre">in_strides</span></code>: array of strides, in each dimension, of input buffer </li>
-<li><code class="docutils literal"><span class="pre">in_distance</span></code>: distance between start of each data instance in input buffer </li>
-<li><code class="docutils literal"><span class="pre">out_strides_size</span></code>: size of out_strides array (must be equal to transform dimensions) </li>
-<li><code class="docutils literal"><span class="pre">out_strides</span></code>: array of strides, in each dimension, of output buffer </li>
-<li><code class="docutils literal"><span class="pre">out_distance</span></code>: distance between start of each data instance in output buffer </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv235rocfft_plan_description_set_devices23rocfft_plan_descriptionPv6size_t">
-<span id="rocfft_plan_description_set_devices__rocfft_plan_description.voidP.s"></span><span class="target" id="rocfft_8h_1aaab37b2058ea36e92bf9142b8d92d1d3"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_description_set_devices</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em>, void *<em>devices</em>, size_t <em>number_of_devices</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv235rocfft_plan_description_set_devices23rocfft_plan_descriptionPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Set devices in plan description. </p>
-<p>This is one of plan description funtions to specify optional additional plan properties using the description handle. This API specifies what compute devices to target. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">description</span></code>: description handle </li>
-<li><code class="docutils literal"><span class="pre">devices</span></code>: array of device identifiers </li>
-<li><code class="docutils literal"><span class="pre">number_of_devices</span></code>: number of devices (size of devices array) </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv232rocfft_plan_get_work_buffer_sizeK11rocfft_planP6size_t">
-<span id="rocfft_plan_get_work_buffer_size__rocfft_planC.sP"></span><span class="target" id="rocfft_8h_1a2b8d6a49fbb5204023776715f971e055"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_get_work_buffer_size</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> <em>plan</em>, size_t *<em>size_in_bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv232rocfft_plan_get_work_buffer_sizeK11rocfft_planP6size_t" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Get work buffer size. </p>
-<p>This is one of plan query functions to obtain information regarding a plan. This API gets the work buffer size. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
-<li><code class="docutils literal"><span class="pre">size_in_bytes</span></code>: size of needed work buffer in bytes </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv221rocfft_plan_get_printK11rocfft_plan">
-<span id="rocfft_plan_get_print__rocfft_planC"></span><span class="target" id="rocfft_8h_1ab08a774ca1a58be2bcc8bde89880487f"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_get_print</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv211rocfft_plan" title="rocfft_plan">rocfft_plan</a> <em>plan</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv221rocfft_plan_get_printK11rocfft_plan" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Print all plan information. </p>
-<p>This is one of plan query functions to obtain information regarding a plan. This API prints all plan info to stdout to help user verify plan properties. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">plan</span></code>: plan handle </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv230rocfft_plan_description_createP23rocfft_plan_description">
-<span id="rocfft_plan_description_create__rocfft_plan_descriptionP"></span><span class="target" id="rocfft_8h_1a3c38da7775a4e0425a589c5486c6ffc4"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_description_create</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> *<em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv230rocfft_plan_description_createP23rocfft_plan_description" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Create plan description. </p>
-<p>This API creates a plan description with which the user can set more plan properties <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">description</span></code>: plan description handle </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv231rocfft_plan_description_destroy23rocfft_plan_description">
-<span id="rocfft_plan_description_destroy__rocfft_plan_description"></span><span class="target" id="rocfft_8h_1a9e5f32c5eb787b7c8c3f96402a017f3f"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_plan_description_destroy</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv223rocfft_plan_description" title="rocfft_plan_description">rocfft_plan_description</a> <em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv231rocfft_plan_description_destroy23rocfft_plan_description" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Destroy a plan description. </p>
-<p>This API frees the plan description <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">description</span></code>: plan description handle </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv228rocfft_execution_info_createP21rocfft_execution_info">
-<span id="rocfft_execution_info_create__rocfft_execution_infoP"></span><span class="target" id="rocfft_8h_1aafb626ad7f63900a68fc913bf8c45e5b"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_execution_info_create</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> *<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv228rocfft_execution_info_createP21rocfft_execution_info" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Create execution info. </p>
-<p>This API creates an execution info with which the user can control plan execution &amp; retrieve execution information <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv229rocfft_execution_info_destroy21rocfft_execution_info">
-<span id="rocfft_execution_info_destroy__rocfft_execution_info"></span><span class="target" id="rocfft_8h_1a2c636a589cf9b2356dc94a4042017862"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_execution_info_destroy</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv229rocfft_execution_info_destroy21rocfft_execution_info" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Destroy an execution info. </p>
-<p>This API frees the execution info <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv237rocfft_execution_info_set_work_buffer21rocfft_execution_infoPv6size_t">
-<span id="rocfft_execution_info_set_work_buffer__rocfft_execution_info.voidP.s"></span><span class="target" id="rocfft_8h_1a08ea96bd88efb4a30421ccd1566588a1"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_execution_info_set_work_buffer</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em>, void *<em>work_buffer</em>, size_t <em>size_in_bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv237rocfft_execution_info_set_work_buffer21rocfft_execution_infoPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Set work buffer in execution info. </p>
-<p>This is one of the execution info funtions to specify optional additional information to control execution. This API specifies work buffer needed. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
-<li><code class="docutils literal"><span class="pre">work_buffer</span></code>: work buffer </li>
-<li><code class="docutils literal"><span class="pre">size_in_bytes</span></code>: size of work buffer in bytes </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv230rocfft_execution_info_set_mode21rocfft_execution_info21rocfft_execution_mode">
-<span id="rocfft_execution_info_set_mode__rocfft_execution_info.rocfft_execution_mode"></span><span class="target" id="rocfft_8h_1a607a95441e610e2998e86d6843d3e623"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_execution_info_set_mode</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em>, <a class="reference internal" href="#_CPPv221rocfft_execution_mode" title="rocfft_execution_mode">rocfft_execution_mode</a> <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv230rocfft_execution_info_set_mode21rocfft_execution_info21rocfft_execution_mode" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Set execution mode in execution info. </p>
-<p>This is one of the execution info funtions to specify optional additional information to control execution. This API specifies execution mode. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
-<li><code class="docutils literal"><span class="pre">mode</span></code>: execution mode </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv232rocfft_execution_info_set_stream21rocfft_execution_infoPv">
-<span id="rocfft_execution_info_set_stream__rocfft_execution_info.voidP"></span><span class="target" id="rocfft_8h_1acc58835e1040ad7f8225f67bc849d957"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_execution_info_set_stream</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em>, void *<em>stream</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv232rocfft_execution_info_set_stream21rocfft_execution_infoPv" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Set stream in execution info. </p>
-<p>This is one of the execution info funtions to specify optional additional information to control execution. This API specifies underlying compute stream. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
-<li><code class="docutils literal"><span class="pre">stream</span></code>: underlying compute stream </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv232rocfft_execution_info_get_eventsK21rocfft_execution_infoPPvP6size_t">
-<span id="rocfft_execution_info_get_events__rocfft_execution_infoC.voidPP.sP"></span><span class="target" id="rocfft_8h_1adb60cf2949894ff95e6d09a0c206717b"></span><a class="reference internal" href="#_CPPv213rocfft_status" title="rocfft_status">rocfft_status</a> <code class="descname">rocfft_execution_info_get_events</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv221rocfft_execution_info" title="rocfft_execution_info">rocfft_execution_info</a> <em>info</em>, void **<em>events</em>, size_t *<em>number_of_events</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv232rocfft_execution_info_get_eventsK21rocfft_execution_infoPPvP6size_t" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Get events from execution info. </p>
-<p>This is one of the execution info funtions to retrieve information from execution. This API obtains event information. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">info</span></code>: execution info handle </li>
-<li><code class="docutils literal"><span class="pre">events</span></code>: array of events </li>
-<li><code class="docutils literal"><span class="pre">number_of_events</span></code>: number of events (size of events array) </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-</div>
-</dd></dl>
-
 </div>
 
 
@@ -647,6 +693,8 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="allapi.html" class="btn btn-neutral float-right" title="All API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="real.html" class="btn btn-neutral" title="Real data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -680,7 +728,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0',
+            VERSION:'0.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
